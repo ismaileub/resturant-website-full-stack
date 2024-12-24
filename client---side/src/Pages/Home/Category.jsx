@@ -39,7 +39,7 @@ const Category = () => {
 
 
 
-            <div className='mx-64' >
+            <div className='' >
                 <Marquee speed={30} pauseOnHover={true} >
 
 

@@ -5,6 +5,14 @@ import "./index.css";
 import router from "./Routes/Router";
 import AuthProviders from "./Components/Providers/AuthProviders";
 
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
+
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -13,9 +21,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
     <AuthProviders>
 
-      <div className="container mx-auto">
-        <RouterProvider router={router} />
-      </div>
+      <QueryClientProvider client={queryClient}>
+        <div className="container mx-auto">
+          <RouterProvider router={router} />
+        </div>
+
+      </QueryClientProvider>
 
     </AuthProviders>
 
