@@ -2,6 +2,7 @@ import React from 'react';
 import SectionTitle from '../../Components/Common/SectionTitle';
 import useMenu from '../../Components/Hooks/useMenu';
 import MenuItem from '../../Components/Common/MenuItem';
+import { Link } from 'react-router-dom';
 
 const Menu = () => {
 
@@ -23,9 +24,9 @@ const Menu = () => {
                     ></MenuItem>)
                 }
             </div>
-            <div className='w-full'>
-                <button className=" block mx-auto btn btn-outline border-0 border-b-4 mt-4">View Full Menu</button>
-            </div>
+            <Link to="/our-menu" className='w-full'>
+                <button className="inter block mx-auto btn btn-outline border-0 border-b-4 mt-4">View Full Menu</button>
+            </Link>
 
         </section>
     );

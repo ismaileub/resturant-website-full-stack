@@ -47,6 +47,9 @@ const styles = {
         color: '#ffffff',
         textAlign: 'center',
         padding: '20px 0',
+        marginTop: '20px',
+        fontFamily: '"Inter", serif',
+
     },
     container: {
         display: 'flex',

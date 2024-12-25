@@ -45,7 +45,7 @@ const FromMenuSection = () => {
                         </h3>
 
                         {/* Description Section */}
-                        <p className="text-base font-medium text-left">
+                        <p className="text-base inter opacity-80 font-medium text-left">
                             {isExpanded
                                 ? 'Explore the origins of our unique flavors, crafted to bring you an unforgettable culinary experience. Discover the passion behind our menu, made with fresh ingredients and a touch of creativity. From locally sourced produce to globally inspired dishes, each plate tells a story of care, dedication, and culinary artistry. Join us on a journey that tantalizes your taste buds and nourishes your soul.'
                                 : 'Explore the origins of our unique flavors, crafted to bring you an unforgettable culinary experience. Discover the passion behind our menu, made with fresh ingredients and a touch of creativity....'}

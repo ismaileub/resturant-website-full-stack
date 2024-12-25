@@ -39,7 +39,7 @@ const Category = () => {
 
 
 
-            <div className='' >
+            <div className='cinzel' >
                 <Marquee speed={30} pauseOnHover={true} >
 
 
