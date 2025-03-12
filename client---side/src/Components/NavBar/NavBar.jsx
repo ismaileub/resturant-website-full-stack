@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import useAuth from '../Hooks/useAuth';
 import profile from '../../assets/others/profile.png'
+import { FaShoppingCart } from 'react-icons/fa';
+import useCart from '../Hooks/useCart';
 
 const NavBar = () => {
     const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false); // State for toggling menu
 
     const { user, logOut } = useAuth();
+    const [cart] = useCart();
 
     const navOptions = (
         <>
@@ -37,7 +40,7 @@ const NavBar = () => {
             </li>
             <li>
                 <NavLink
-                    to="/dashboard"
+                    to="/dashboard/userHome"
                     className={({ isActive }) =>
                         isActive
                             ? "text-[#EEFF25] font-bold hover:text-[#EEFF25]"
@@ -70,6 +73,14 @@ const NavBar = () => {
                 >
                     Our Shop
                 </NavLink>
+            </li>
+            <li>
+                <Link to="/dashboard/cart">
+                    <button className="flex">
+                        <FaShoppingCart size={30} className=""></FaShoppingCart>
+                        <div className="badge w-3 badge-secondary">+{cart.length}</div>
+                    </button>
+                </Link>
             </li>
         </>
     );
