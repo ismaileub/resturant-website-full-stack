@@ -76,35 +76,32 @@ async function run() {
         }
 
 
-        // const verifyToken = (req, res, next) => {
-        //     const authHeader = req.headers.authorization;
-        //     if (!authHeader) {
-        //         console.log('No token provided!');
-        //         return res.status(401).send({ message: 'Unauthorized: No token provided' });
-        //     }
-
-        //     const token = authHeader.split(' ')[1];
-        //     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        //         if (err) {
-        //             console.log('Token verification failed:', err); // <== ADD THIS
-        //             return res.status(403).send({ message: 'Forbidden: Invalid token' });
-        //         }
-        //         console.log('Decoded token:', decoded); // <== ADD THIS
-        //         req.decoded = decoded;
-        //         next();
-        //     });
-        // };
 
 
-
-
-
-
-        // menu related apis
+        //menu related api
         app.get('/menu', async (req, res) => {
             const result = await menuCollection.find().toArray();
             res.send(result);
         });
+
+
+        app.post('/menu', verifyToken, verifyAdmin, async (req, res) => {
+            const item = req.body;
+            const result = await menuCollection.insertOne(item);
+            res.send(result);
+        });
+
+        app.delete('/menu/:id', verifyToken, verifyAdmin, async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: new ObjectId(id) }
+            const result = await menuCollection.deleteOne(query);
+            res.send(result);
+        })
+
+
+
+
 
         app.get('/reviews', async (req, res) => {
             const result = await reviewCollection.find().toArray();
@@ -124,6 +121,24 @@ async function run() {
             const result = await cartCollection.insertOne(cartItem);
             res.send(result);
         });
+
+        app.patch('/menu/:id', async (req, res) => {
+            const item = req.body;
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const updatedDoc = {
+                $set: {
+                    name: item.name,
+                    category: item.category,
+                    price: item.price,
+                    recipe: item.recipe,
+                    image: item.image
+                }
+            }
+
+            const result = await menuCollection.updateOne(filter, updatedDoc)
+            res.send(result);
+        })
 
         app.delete('/carts/:id', async (req, res) => {
             const id = req.params.id;

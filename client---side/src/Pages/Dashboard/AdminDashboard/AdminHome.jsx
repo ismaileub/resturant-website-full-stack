@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import useAuth from '../../../hooks/useAuth'
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
+//import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { FaBook, FaDollarSign, FaUsers } from 'react-icons/fa';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, PieChart, Pie, Legend } from 'recharts';
+import useAuth from '../../../Components/Hooks/useAuth';
+import useAxiosSecure from '../../../Components/Hooks/useAxiosSecure';
 
 const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
