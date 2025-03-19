@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import useMenu from "../../../Components/Hooks/useMenu";
 import useAxiosSecure from "../../../Components/Hooks/useAxiosSecure";
 
-
 const ManageItems = () => {
     const [menu, , refetch] = useMenu();
     const axiosSecure = useAxiosSecure();
@@ -22,11 +21,7 @@ const ManageItems = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const res = await axiosSecure.delete(`/menu/${item._id}`);
-                console.log(item._id);
-                console.log(res.data);
-
                 if (res.data.deletedCount > 0) {
-                    // refetch to update the ui
                     refetch();
                     Swal.fire({
                         position: "top-end",
@@ -36,71 +31,64 @@ const ManageItems = () => {
                         timer: 1500
                     });
                 }
-
-
             }
         });
-    }
+    };
 
     return (
-        <div>
+        <div className="px-8 py-6">
             <SectionTitle heading="Manage All Items" subHeading="Hurry up"></SectionTitle>
-            <div>
+            <div className="bg-white p-6 rounded-lg shadow-md border">
+                <h2 className="text-xl font-bold mb-4">Total Items: {menu.length}</h2>
                 <div className="overflow-x-auto">
-                    <table className="table w-full">
-                        {/* head */}
+                    <table className="table w-full border border-gray-200">
+                        {/* Table Header */}
                         <thead>
-                            <tr>
-                                <th>
-                                    #
-                                </th>
-                                <th>Image</th>
-                                <th>Item Name</th>
-                                <th>Price</th>
-                                <th>Update</th>
-                                <th>Delete</th>
+                            <tr className="bg-yellow-600 text-white text-left">
+                                <th className="py-3 px-4">#</th>
+                                <th className="py-3 px-4">Item Image</th>
+                                <th className="py-3 px-4">Item Name</th>
+                                <th className="py-3 px-4">Price</th>
+                                <th className="py-3 px-4 text-center">Action</th>
+                                <th className="py-3 px-4 text-center">Action</th>
                             </tr>
                         </thead>
+                        {/* Table Body */}
                         <tbody>
-                            {
-                                menu.map((item, index) => <tr key={item._id}>
-                                    <td>
-                                        {index + 1}
-                                    </td>
-                                    <td>
-                                        <div className="flex items-center gap-3">
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle w-12 h-12">
-                                                    <img src={item.image} alt="Avatar Tailwind CSS Component" />
-                                                </div>
+                            {menu.map((item, index) => (
+                                <tr key={item._id} className="border-b hover:bg-gray-100">
+                                    <td className="py-3 px-4 font-semibold">{index + 1}</td>
+                                    <td className="py-3 px-4">
+                                        <div className="flex items-center">
+                                            <div className="w-12 h-12 border rounded-md overflow-hidden">
+                                                <img
+                                                    src={item.image || "https://via.placeholder.com/50"}
+                                                    alt={item.name}
+                                                    className="w-full h-full object-cover"
+                                                />
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        {item.name}
-                                    </td>
-                                    <td className="text-right">${item.price}</td>
-                                    <td>
+                                    <td className="py-3 px-4">{item.name}</td>
+                                    <td className="py-3 px-4 font-semibold">${item.price.toFixed(2)}</td>
+                                    <td className="py-3 px-4 text-center">
                                         <Link to={`/dashboard/updateItem/${item._id}`}>
-                                            <button
-                                                className="btn btn-ghost btn-lg bg-orange-500">
-                                                <FaEdit className="text-white 
-                                        "></FaEdit>
+                                            <button className="btn bg-orange-500 text-white px-3 py-2 rounded-md">
+                                                <FaEdit />
                                             </button>
                                         </Link>
                                     </td>
-                                    <td>
+                                    <td className="py-3 px-4 text-center">
                                         <button
                                             onClick={() => handleDeleteItem(item)}
-                                            className="btn btn-ghost btn-lg">
-                                            <FaTrashAlt className="text-red-600"></FaTrashAlt>
+                                            className="btn bg-red-600 text-white px-3 py-2 rounded-md"
+                                        >
+                                            <FaTrashAlt />
                                         </button>
                                     </td>
-                                </tr>)
-                            }
+                                </tr>
+                            ))}
                         </tbody>
-
-
                     </table>
                 </div>
             </div>

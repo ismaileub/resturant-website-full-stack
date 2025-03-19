@@ -4,11 +4,12 @@ import useAuth from '../Hooks/useAuth';
 import profile from '../../assets/others/profile.png'
 import { FaShoppingCart } from 'react-icons/fa';
 import useCart from '../Hooks/useCart';
+import useAdmin from '../Hooks/useAdmin';
 
 const NavBar = () => {
     const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false); // State for toggling menu
-
+    const [isAdmin] = useAdmin();
     const { user, logOut } = useAuth();
     const [cart] = useCart();
 
@@ -38,18 +39,22 @@ const NavBar = () => {
                     Contact Us
                 </NavLink>
             </li>
-            <li>
-                <NavLink
-                    to="/dashboard/userHome"
-                    className={({ isActive }) =>
-                        isActive
-                            ? "text-[#EEFF25] font-bold hover:text-[#EEFF25]"
-                            : "text-white hover:text-[#EEFF25]"
-                    }
-                >
-                    Dashboard
-                </NavLink>
-            </li>
+            {
+                user && isAdmin && <li><NavLink to="/dashboard/adminHome" className={({ isActive }) =>
+                    isActive
+                        ? "text-[#EEFF25] font-bold hover:text-[#EEFF25]"
+                        : "text-white hover:text-[#EEFF25]"
+                } >Dashboard</NavLink></li>
+            }
+            {
+                user && !isAdmin && <li><NavLink to="/dashboard/userHome" className={({ isActive }) =>
+                    isActive
+                        ? "text-[#EEFF25] font-bold hover:text-[#EEFF25]"
+                        : "text-white hover:text-[#EEFF25]"
+                }>Dashboard</NavLink></li>
+            }
+
+
             <li>
                 <NavLink
                     to="/our-menu"
@@ -74,14 +79,16 @@ const NavBar = () => {
                     Our Shop
                 </NavLink>
             </li>
-            <li>
-                <Link to="/dashboard/cart">
-                    <button className="flex">
-                        <FaShoppingCart size={30} className=""></FaShoppingCart>
-                        <div className="badge w-3 badge-secondary">+{cart.length}</div>
-                    </button>
-                </Link>
-            </li>
+            {
+                user && !isAdmin && <li>
+                    <Link to="/dashboard/cart">
+                        <button className="flex">
+                            <FaShoppingCart size={30} className=""></FaShoppingCart>
+                            <div className="badge w-3 badge-secondary">+{cart.length}</div>
+                        </button>
+                    </Link>
+                </li>
+            }
         </>
     );
 

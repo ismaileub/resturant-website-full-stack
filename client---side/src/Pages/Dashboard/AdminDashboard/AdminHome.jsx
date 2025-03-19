@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-//import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { FaBook, FaDollarSign, FaUsers } from 'react-icons/fa';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, PieChart, Pie, Legend } from 'recharts';
 import useAuth from '../../../Components/Hooks/useAuth';
 import useAxiosSecure from '../../../Components/Hooks/useAxiosSecure';
+//import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, XAxis, YAxis } from 'recharts';
 
 const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -16,6 +16,7 @@ const AdminHome = () => {
         queryKey: ['admin-stats'],
         queryFn: async () => {
             const res = await axiosSecure.get('/admin-stats');
+            console.log('Stats Response:', res);
             return res.data;
         }
     });
@@ -24,9 +25,12 @@ const AdminHome = () => {
         queryKey: ['order-stats'],
         queryFn: async () => {
             const res = await axiosSecure.get('/order-stats');
+            console.log('Chart Data Response:', res);
             return res.data;
         }
     })
+
+
 
     // custom shape for the bar chart
     const getPath = (x, y, width, height) => {
@@ -58,16 +62,23 @@ const AdminHome = () => {
 
     const pieChartData = chartData.map(data => {
         return { name: data.category, value: data.revenue }
-    })
+    });
+
+
+
+
+    // console.log("Chart Data:", chartData);
+    // console.log("Pie Chart Data:", pieChartData);
 
     return (
-        <div>
+        <div className='p-10'>
             <h2 className="text-3xl">
                 <span>Hi, Welcome </span>
                 {
                     user?.displayName ? user.displayName : 'Back'
                 }
             </h2>
+
             <div className="stats shadow">
 
                 <div className="stat">
@@ -108,7 +119,8 @@ const AdminHome = () => {
                 </div>
 
             </div>
-            <div className="flex">
+
+            <div className="flex justify-between items-center">
                 <div className="w-1/2">
                     <BarChart
                         width={500}

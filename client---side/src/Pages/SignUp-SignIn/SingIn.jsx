@@ -5,7 +5,7 @@ import img from '../../assets/others/authentication2.png'
 import useAuth from "../../Components/Hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast";
 import useAxiosPublic from "../../Components/Hooks/useAxiosPublic";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 
 
@@ -13,46 +13,21 @@ const SignIn = () => {
     const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const { createUser, updateUserProfile, googleSignIn } = useAuth();
+    const { signIn, googleSignIn } = useAuth();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || "/";
 
     const onSubmit = data => {
+        const email = data.email;
+        const password = data.password;
 
-        createUser(data.email, data.password)
+        signIn(email, password)
             .then(result => {
-                const loggedUser = result.user;
-                console.log(loggedUser);
-                updateUserProfile(data.name)
-                    .then(() => {
-                        // create user entry in the database
-                        const userInfo = {
-                            name: data.name,
-                            email: data.email
-                        }
-                        axiosPublic.post('/users', userInfo)
-                            .then(res => {
-                                if (res.data.insertedId) {
-                                    console.log('user added to the database')
-                                    reset();
-                                    toast.success('User Created!')
-                                    navigate('/');
-                                }
-                            })
-
-
-                    })
-                    .catch(error => console.log(error))
-
-
-            }).catch(error => {
-                console.log(error);
-
-                if (error.code === "auth/email-already-in-use") {
-                    toast.error("Email is already in use.");
-                } else if (error.code === "auth/weak-password") {
-                    toast.error("Password is too weak.");
-                } else {
-                    toast.error("An unknown error occurred.");
-                }
+                const user = result.user;
+                //console.log(user);
+                toast.success('User LoggedIn')
+                navigate(from, { replace: true });
             })
     };
 
@@ -60,16 +35,17 @@ const SignIn = () => {
         console.log("hello");
         googleSignIn()
             .then(result => {
-                console.log(result.user);
+                //console.log(result.user);
                 const userInfo = {
                     email: result.user?.email,
                     name: result.user?.displayName
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
-                        console.log(res.data);
+                        // console.log(res.data);
                         navigate('/');
                     })
+                toast.success('User LoggedIn')
             })
     }
 

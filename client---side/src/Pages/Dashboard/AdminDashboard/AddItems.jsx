@@ -12,29 +12,24 @@ const AddItems = () => {
     const { register, handleSubmit, reset } = useForm();
     const axiosPublic = useAxiosPublic();
     const axiosSecure = useAxiosSecure();
+
     const onSubmit = async (data) => {
-        console.log(data)
-        // image upload to imgbb and then get an url
-        const imageFile = { image: data.image[0] }
+        const imageFile = { image: data.image[0] };
         const res = await axiosPublic.post(image_hosting_api, imageFile, {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
+            headers: { 'content-type': 'multipart/form-data' }
         });
+
         if (res.data.success) {
-            // now send the menu item data to the server with the image url
             const menuItem = {
                 name: data.name,
                 category: data.category,
                 price: parseFloat(data.price),
                 recipe: data.recipe,
                 image: res.data.data.display_url
-            }
-            // 
+            };
+
             const menuRes = await axiosSecure.post('/menu', menuItem);
-            console.log(menuRes.data)
             if (menuRes.data.insertedId) {
-                // show success popup
                 reset();
                 Swal.fire({
                     position: "top-end",
@@ -45,73 +40,54 @@ const AddItems = () => {
                 });
             }
         }
-        console.log('with image url', res.data);
     };
 
     return (
-        <div>
+        <div className="w-full h-full  mx-auto px-24 bg-gray-100 rounded-lg ">
+            <SectionTitle heading="ADD AN ITEM" subHeading="---What's new?---" />
 
-            <SectionTitle heading="add an item" subHeading="What's new?" ></SectionTitle>
-            <div>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="form-control w-full my-6">
-                        <label className="label">
-                            <span className="label-text">Recipe Name*</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Recipe Name"
-                            {...register('name', { required: true })}
-                            required
-                            className="input input-bordered w-full" />
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div>
+                    <label className="block text-gray-700">Recipe Name*</label>
+                    <input type="text" {...register('name', { required: true })} placeholder="Recipe name"
+                        className="w-full px-4 py-2 border rounded-md " required />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-gray-700">Category*</label>
+                        <select {...register('category', { required: true })}
+                            className="w-full px-4 py-2 border rounded-md ">
+                            <option disabled value="default">Category</option>
+                            <option value="salad">Salad</option>
+                            <option value="pizza">Pizza</option>
+                            <option value="soup">Soup</option>
+                            <option value="dessert">Dessert</option>
+                            <option value="drinks">Drinks</option>
+                        </select>
                     </div>
-                    <div className="flex gap-6">
-                        {/* category */}
-                        <div className="form-control w-full my-6">
-                            <label className="label">
-                                <span className="label-text">Category*</span>
-                            </label>
-                            <select defaultValue="default" {...register('category', { required: true })}
-                                className="select select-bordered w-full">
-                                <option disabled value="default">Select a category</option>
-                                <option value="salad">Salad</option>
-                                <option value="pizza">Pizza</option>
-                                <option value="soup">Soup</option>
-                                <option value="dessert">Dessert</option>
-                                <option value="drinks">Drinks</option>
-                            </select>
-                        </div>
-
-                        {/* price */}
-                        <div className="form-control w-full my-6">
-                            <label className="label">
-                                <span className="label-text">Price*</span>
-                            </label>
-                            <input
-                                type="number"
-                                placeholder="Price"
-                                {...register('price', { required: true })}
-                                className="input input-bordered w-full" />
-                        </div>
-
+                    <div>
+                        <label className="block text-gray-700">Price*</label>
+                        <input type="number" {...register('price', { required: true })} placeholder="Price"
+                            className="w-full px-4 py-2 border rounded-md " />
                     </div>
-                    {/* recipe details */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Recipe Details</span>
-                        </label>
-                        <textarea {...register('recipe')} className="textarea textarea-bordered h-24" placeholder="Bio"></textarea>
-                    </div>
+                </div>
 
-                    <div className="form-control w-full my-6">
-                        <input {...register('image', { required: true })} type="file" className="file-input w-full max-w-xs" />
-                    </div>
+                <div>
+                    <label className="block text-gray-700">Recipe Details*</label>
+                    <textarea {...register('recipe')} placeholder="Recipe Details"
+                        className="w-full px-4 py-2 border rounded-md h-24 focus:ring focus:ring-yellow-400"></textarea>
+                </div>
 
-                    <button className="btn">
-                        Add Item <FaUtensils className="ml-4"></FaUtensils>
-                    </button>
-                </form>
-            </div>
+                <div>
+                    <input {...register('image', { required: true })} type="file"
+                        className="block  text-gray-700 cursor-pointer" />
+                </div>
+
+                <button type="submit" className=" flex items-center justify-center bg-yellow-600 text-white px-6 py-2 rounded-md hover:bg-yellow-700">
+                    Add Item <FaUtensils className="ml-2" />
+                </button>
+            </form>
         </div>
     );
 };

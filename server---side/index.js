@@ -4,6 +4,15 @@ const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken'); //for access token
 require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const formData = require('form-data');
+const Maligun = require('mailgun.js');
+const mailgun = new Maligun(formData);
+
+const mg = mailgun.client({
+    username: 'api',
+    key: process.env.MAILGUN_API_KEY
+});
 
 //stripe for payment
 
@@ -36,6 +45,7 @@ async function run() {
         const reviewCollection = client.db("resturant").collection("reviews");
         const userCollection = client.db("resturant").collection("users");
         const cartCollection = client.db("resturant").collection("carts");
+        const paymentCollection = client.db("resturant").collection("payments");
 
 
 
@@ -83,6 +93,13 @@ async function run() {
             const result = await menuCollection.find().toArray();
             res.send(result);
         });
+
+        app.get('/menu/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await menuCollection.findOne(query);
+            res.send(result);
+        })
 
 
         app.post('/menu', verifyToken, verifyAdmin, async (req, res) => {
@@ -206,6 +223,208 @@ async function run() {
             const result = await userCollection.deleteOne(query);
             res.send(result);
         })
+
+
+
+        // payment intent
+        app.post('/create-payment-intent', async (req, res) => {
+            const { price } = req.body;
+            const amount = parseInt(price * 100);
+            console.log(amount, 'amount inside the intent')
+
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: amount,
+                currency: 'usd',
+                payment_method_types: ['card']
+            });
+
+            res.send({
+                clientSecret: paymentIntent.client_secret
+            })
+        });
+
+
+        app.get('/payments/:email', verifyToken, async (req, res) => {
+            const query = { email: req.params.email }
+            if (req.params.email !== req.decoded.email) {
+                return res.status(403).send({ message: 'forbidden access' });
+            }
+            const result = await paymentCollection.find(query).toArray();
+            res.send(result);
+        })
+
+        app.post('/payments', async (req, res) => {
+            const payment = req.body;
+            const paymentResult = await paymentCollection.insertOne(payment);
+
+            //  carefully delete each item from the cart
+            console.log('payment info', payment);
+            const query = {
+                _id: {
+                    $in: payment.cartIds.map(id => new ObjectId(id))
+                }
+            };
+
+            const deleteResult = await cartCollection.deleteMany(query);
+
+
+            mg.messages.create(process.env.MAIL_SENDING_DOMAIN, {
+                from: `Excited User <mailgun@${process.env.MAIL_SENDING_DOMAIN}>`,
+                to: ["ismail301515@gmail.com"],
+                subject: "Hello",
+                text: "Food Paradise order confirmation",
+                html: `
+                <div>
+                 <h1>Thank you for your order!</h1>
+                 <h4>Your transition Id: <strong>${payment.transactionId}</strong> </h4>
+                </div>
+               `
+            })
+                .then(msg => console.log(msg)) // logs response data
+                .catch(err => console.error(err)); // logs any error
+
+            res.send({ paymentResult, deleteResult });
+        })
+
+
+
+        // stats or analytics
+        app.get('/admin-stats', verifyToken, verifyAdmin, async (req, res) => {
+            const users = await userCollection.estimatedDocumentCount();
+            const menuItems = await menuCollection.estimatedDocumentCount();
+            const orders = await paymentCollection.estimatedDocumentCount();
+
+            // this is not the best way
+            // const payments = await paymentCollection.find().toArray();
+            // const revenue = payments.reduce((total, payment) => total + payment.price, 0);
+
+            const result = await paymentCollection.aggregate([
+                {
+                    $group: {
+                        _id: null,
+                        totalRevenue: {
+                            $sum: '$price'
+                        }
+                    }
+                }
+            ]).toArray();
+
+            const revenue = result.length > 0 ? result[0].totalRevenue : 0;
+
+            res.send({
+                users,
+                menuItems,
+                orders,
+                revenue
+            })
+        })
+
+
+        // using aggregate pipeline
+        // app.get('/order-stats', async (req, res) => {
+        //     const result = await paymentCollection.aggregate([
+        //         {
+        //             $unwind: '$menuItemIds'
+        //         },
+        //         {
+        //             $lookup: {
+        //                 from: 'menu',
+        //                 localField: 'menuItemIds',
+        //                 foreignField: '_id',
+        //                 as: 'menuItems'
+        //             }
+        //         },
+        //         {
+        //             $unwind: '$menuItems'
+        //         },
+        //         {
+        //             $group: {
+        //                 _id: '$menuItems.category',
+        //                 quantity: { $sum: 1 },
+        //                 revenue: { $sum: '$menuItems.price' }
+        //             }
+        //         },
+        //         {
+        //             $project: {
+        //                 _id: 0,
+        //                 category: '$_id',
+        //                 quantity: '$quantity',
+        //                 revenue: '$revenue'
+        //             }
+        //         }
+        //     ]).toArray();
+        //     console.log(result);
+
+        //     res.send(result);
+
+        // })
+
+        // app.get('/order-stats', async (req, res) => {
+        //     const result = await paymentCollection.aggregate([
+        //         {
+        //             $lookup: {
+        //                 from: 'menu',
+        //                 localField: 'menuItemIds',
+        //                 foreignField: '_id',
+        //                 as: 'menuItems'
+        //             }
+        //         },
+        //         {
+        //             $project: {
+        //                 menuItemIds: 1,
+        //                 menuItems: 1
+        //             }
+        //         }
+        //     ]).toArray();
+
+        //     console.log(result); // Debug the result
+        //     res.send(result);
+        // });
+
+        app.get('/order-stats', verifyToken, verifyAdmin, async (req, res) => {
+            const result = await paymentCollection.aggregate([
+                {
+                    $addFields: {
+                        menuItemIds: {
+                            $map: {
+                                input: "$menuItemIds",
+                                as: "item",
+                                in: { $toObjectId: "$$item" }
+                            }
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'menu',
+                        localField: 'menuItemIds',
+                        foreignField: '_id',
+                        as: 'menuItems'
+                    }
+                },
+                {
+                    $unwind: "$menuItems"
+                },
+                {
+                    $group: {
+                        _id: "$menuItems.category", // Group by category
+                        quantity: { $sum: 1 }, // Count occurrences
+                        revenue: { $sum: "$price" } // Sum total revenue
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0, // Hide _id
+                        category: "$_id", // Rename _id to category
+                        quantity: 1, // Show quantity
+                        revenue: 1 // Show revenue
+                    }
+                }
+            ]).toArray();
+
+            console.log(result); // Debugging output
+            res.send(result);
+        });
 
 
 

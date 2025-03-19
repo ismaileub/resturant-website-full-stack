@@ -57,7 +57,7 @@ const SignUp = () => {
     };
 
     const handleGoogleSignIn = () => {
-        console.log("hello");
+        //console.log("hello");
         googleSignIn()
             .then(result => {
                 console.log(result.user);
