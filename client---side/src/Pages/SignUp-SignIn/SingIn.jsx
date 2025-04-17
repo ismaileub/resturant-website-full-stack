@@ -18,18 +18,36 @@ const SignIn = () => {
 
     const from = location.state?.from?.pathname || "/";
 
-    const onSubmit = data => {
+    const onSubmit = (data) => {
         const email = data.email;
         const password = data.password;
 
         signIn(email, password)
-            .then(result => {
+            .then((result) => {
                 const user = result.user;
-                //console.log(user);
-                toast.success('User LoggedIn')
+                toast.success('User Logged In');
                 navigate(from, { replace: true });
             })
+            .catch((error) => {
+                console.error("Login failed:", error);
+
+                let message = "Login failed. Please try again.";
+
+                if (error.code === "auth/invalid-credential") {
+                    message = "Invalid email or password.";
+                } else if (error.code === "auth/user-not-found") {
+                    message = "No user found with this email.";
+                } else if (error.code === "auth/wrong-password") {
+                    message = "Incorrect password.";
+                } else if (error.code === "auth/too-many-requests") {
+                    message = "Too many login attempts. Please try again later.";
+                }
+
+                toast.error(message);
+            });
     };
+
+
 
     const handleGoogleSignIn = () => {
         console.log("hello");

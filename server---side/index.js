@@ -42,10 +42,13 @@ async function run() {
     try {
 
         const menuCollection = client.db("resturant").collection("menu");
-        const reviewCollection = client.db("resturant").collection("reviews");
+        const testimonialsCollection = client.db("resturant").collection("testimonials");
         const userCollection = client.db("resturant").collection("users");
         const cartCollection = client.db("resturant").collection("carts");
         const paymentCollection = client.db("resturant").collection("payments");
+        const reviewCollection = client.db("resturant").collection("reviews");
+        const reservationCollection = client.db("resturant").collection("reservation");
+
 
 
 
@@ -120,8 +123,8 @@ async function run() {
 
 
 
-        app.get('/reviews', async (req, res) => {
-            const result = await reviewCollection.find().toArray();
+        app.get('/testimonials', async (req, res) => {
+            const result = await testimonialsCollection.find().toArray();
             res.send(result);
         })
 
@@ -224,6 +227,61 @@ async function run() {
             res.send(result);
         })
 
+
+
+        // POST a new review
+        app.post('/reviews', async (req, res) => {
+            try {
+                const review = req.body;
+
+
+                const result = await reviewCollection.insertOne(review);
+                res.send({
+                    message: 'Review added successfully!',
+                    insertedId: result.insertedId
+                });
+            } catch (error) {
+                console.error('Error saving review:', error);
+                res.status(500).send({ message: 'Failed to add review.' });
+            }
+        });
+
+
+        // POST a new reservation
+        app.post('/reservations', async (req, res) => {
+            try {
+                const reservation = req.body;
+
+
+                const result = await reservationCollection.insertOne(reservation);
+                res.send({
+                    message: 'reservation added successfully!',
+                    insertedId: result.insertedId
+                });
+            } catch (error) {
+                console.error('Error saving reservation:', error);
+                res.status(500).send({ message: 'Failed to booked reservation.' });
+            }
+        });
+
+
+        //get all booking 
+        app.get('/bookings', async (req, res) => {
+            //console.log(req.headers);
+            const result = await reservationCollection.find().toArray();
+            res.send(result);
+        });
+
+
+        //update booking status
+        app.patch("/bookings/:id", async (req, res) => {
+            const { id } = req.params;
+            const result = await reservationCollection.updateOne(
+                { _id: new ObjectId(id) },
+                { $set: { status: req.body.status } }
+            );
+            res.send(result);
+        });
 
 
         // payment intent

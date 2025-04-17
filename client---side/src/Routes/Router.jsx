@@ -19,6 +19,9 @@ import AdminHome from "../Pages/Dashboard/AdminDashboard/AdminHome";
 import UpdateItem from "../Pages/Dashboard/AdminDashboard/UpdateItem";
 import Payment from "../Pages/Dashboard/UserDashboard/Payment/Payment";
 import PaymentHistory from "../Pages/Dashboard/UserDashboard/PaymentHistory/PaymentHistory";
+import AddReview from "../Pages/Dashboard/UserDashboard/AddReview";
+import Reservation from "../Pages/Dashboard/UserDashboard/Reservation";
+import ManageBookings from "../Pages/Dashboard/AdminDashboard/ManageBookings ";
 
 
 
@@ -69,6 +72,14 @@ const router = createBrowserRouter([
                 path: 'cart',
                 element: <MyCart></MyCart>
             },
+            {
+                path: "review",
+                element: <AddReview></AddReview>
+            },
+            {
+                path: "reservation",
+                element: <Reservation></Reservation>
+            },
 
             {
                 path: 'payment',
@@ -96,7 +107,11 @@ const router = createBrowserRouter([
             {
                 path: 'manageItems',
                 element: <AdminRoute><ManageItems></ManageItems></AdminRoute>
-            }
+            },
+            {
+                path: 'bookings',
+                element: <ManageBookings></ManageBookings>
+            },
             ,
             {
                 path: 'updateItem/:id',
