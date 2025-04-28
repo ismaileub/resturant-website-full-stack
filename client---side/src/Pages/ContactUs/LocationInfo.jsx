@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaPhoneAlt, FaMapMarkerAlt, FaClock } from 'react-icons/fa'; // Import icons from React Icons
-import SectionTitle from '../../Components/Common/SectionTitle';
+import SectionTitle from '../../components/Common/SectionTitle';
 
 const LocationInfo = () => {
     const data = [

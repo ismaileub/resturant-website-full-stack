@@ -1,7 +1,7 @@
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FaPhoneAlt, FaMapMarkerAlt, FaClock } from "react-icons/fa";
-import SectionTitle from "../../../Components/Common/SectionTitle";
+import SectionTitle from "../../../components/Common/SectionTitle";
 
 const Reservation = () => {
 

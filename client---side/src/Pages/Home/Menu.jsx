@@ -1,7 +1,7 @@
 import React from 'react';
-import SectionTitle from '../../Components/Common/SectionTitle';
-import useMenu from '../../Components/Hooks/useMenu';
-import MenuItem from '../../Components/Common/MenuItem';
+import SectionTitle from '../../components/Common/SectionTitle';
+import useMenu from '../../components/Hooks/useMenu';
+import MenuItem from '../../components/Common/MenuItem';
 import { Link } from 'react-router-dom';
 
 const Menu = () => {

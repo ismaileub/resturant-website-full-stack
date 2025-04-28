@@ -1,9 +1,9 @@
 import { useLoaderData } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import useAxiosPublic from "../../../Components/Hooks/useAxiosPublic";
-import useAxiosSecure from "../../../Components/Hooks/useAxiosSecure";
-import SectionTitle from "../../../Components/Common/SectionTitle";
+import useAxiosPublic from "../../../components/Hooks/useAxiosPublic";
+import useAxiosSecure from "../../../components/Hooks/useAxiosSecure";
+import SectionTitle from "../../../components/Common/SectionTitle";
 import { useState } from "react";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;

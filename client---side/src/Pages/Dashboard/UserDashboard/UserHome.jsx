@@ -1,5 +1,5 @@
 import { FaUtensils, FaShoppingBag, FaPhoneAlt, FaShoppingCart, FaStar, FaCalendar, FaWallet } from "react-icons/fa"; // Importing icons
-import useAuth from "../../../Components/Hooks/useAuth";
+import useAuth from "../../../components/Hooks/useAuth";
 
 const UserHome = () => {
     const { user } = useAuth();

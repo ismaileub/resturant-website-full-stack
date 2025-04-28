@@ -7,9 +7,9 @@ import dessertImg from '../../../assets/menu/dessert-bg.jpeg'
 
 
 import MenuCategory from '../MenuCategory/MenuCategory';
-import Cover from '../../../Components/Common/Cover';
-import SectionTitle from '../../../Components/Common/SectionTitle';
-import useMenu from '../../../Components/Hooks/useMenu';
+import Cover from '../../../components/Common/Cover';
+import SectionTitle from '../../../components/Common/SectionTitle';
+import useMenu from '../../../components/Hooks/useMenu';
 
 
 const OurMenu = () => {

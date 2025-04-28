@@ -1,9 +1,9 @@
 
 import { Link } from 'react-router-dom';
 ;
-import Cover from '../../../Components/Common/Cover';
-import MenuItem from '../../../Components/Common/MenuItem';
-import AboutSection from '../../../Components/Common/AboutSection';
+import Cover from '../../../components/Common/Cover';
+import MenuItem from '../../../components/Common/MenuItem';
+import AboutSection from '../../../components/Common/AboutSection';
 
 const MenuCategory = ({ items, title, img, description }) => {
     return (

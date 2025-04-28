@@ -5,8 +5,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import OrderTab from '../OrderTab/OrderTab';
 import { useParams } from 'react-router';
-import useMenu from '../../../Components/Hooks/useMenu';
-import Cover from '../../../Components/Common/Cover';
+import useMenu from '../../../components/Hooks/useMenu';
+import Cover from '../../../components/Common/Cover';
 
 
 const Order = () => {

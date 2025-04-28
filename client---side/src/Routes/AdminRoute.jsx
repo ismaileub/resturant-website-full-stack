@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
-import useAuth from "../Components/Hooks/useAuth";
-import useAdmin from "../Components/Hooks/useAdmin";
+import useAuth from "../components/Hooks/useAuth";
+import useAdmin from "../components/Hooks/useAdmin";
 
 
 

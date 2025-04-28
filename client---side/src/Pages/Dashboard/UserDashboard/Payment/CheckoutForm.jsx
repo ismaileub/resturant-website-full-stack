@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAxiosSecure from "../../../../Components/Hooks/useAxiosSecure";
-import useAuth from "../../../../Components/Hooks/useAuth";
-import useCart from "../../../../Components/Hooks/useCart";
+import useAxiosSecure from "../../../../components/Hooks/useAxiosSecure";
+import useAuth from "../../../../components/Hooks/useAuth";
+import useCart from "../../../../components/Hooks/useCart";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import Swal from "sweetalert2";
 

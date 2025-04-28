@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { FaBook, FaDollarSign, FaUsers } from 'react-icons/fa';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, PieChart, Pie, Legend } from 'recharts';
-import useAuth from '../../../Components/Hooks/useAuth';
-import useAxiosSecure from '../../../Components/Hooks/useAxiosSecure';
+import useAuth from '../../../components/Hooks/useAuth';
+import useAxiosSecure from '../../../components/Hooks/useAxiosSecure';
 //import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, XAxis, YAxis } from 'recharts';
 
 const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import useAuth from '../../../Components/Hooks/useAuth';
+import useAuth from '../../../components/Hooks/useAuth';
 import toast, { Toaster } from 'react-hot-toast';
-import SectionTitle from '../../../Components/Common/SectionTitle';
+import SectionTitle from '../../../components/Common/SectionTitle';
 
 const AddReview = () => {
     const { user } = useAuth();

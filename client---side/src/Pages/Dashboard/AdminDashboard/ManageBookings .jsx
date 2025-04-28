@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SectionTitle from "../../../Components/Common/SectionTitle";
+import SectionTitle from "../../../components/Common/SectionTitle";
 import Swal from "sweetalert2";
 
 const ManageBookings = () => {

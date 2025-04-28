@@ -1,5 +1,5 @@
 import React from 'react';
-import Cover from '../../Components/Common/Cover';
+import Cover from '../../components/Common/Cover';
 import contactImg from '../../assets/contact/banner.jpg'
 import LocationInfo from './LocationInfo';
 import ContactForm from './ContactForm';

@@ -2,9 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import bgimg from '../../assets/others/authentication.png'
 import img from '../../assets/others/authentication2.png'
-import useAuth from "../../Components/Hooks/useAuth";
+import useAuth from "../../components/Hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast";
-import useAxiosPublic from "../../Components/Hooks/useAxiosPublic";
+import useAxiosPublic from "../../components/Hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 

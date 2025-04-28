@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import featuredImg from '../../assets/home/featured.jpg';
-import SectionTitle from '../../Components/Common/SectionTitle';
+import SectionTitle from '../../components/Common/SectionTitle';
 
 
 

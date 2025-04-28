@@ -1,5 +1,5 @@
 import React from 'react';
-import useAxiosSecure from '../../../Components/Hooks/useAxiosSecure';
+import useAxiosSecure from '../../../components/Hooks/useAxiosSecure';
 import { FaTrashAlt, FaUsers } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';

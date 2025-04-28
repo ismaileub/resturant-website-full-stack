@@ -2,9 +2,9 @@ import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 import { Link } from "react-router-dom";
-import useAxiosSecure from "../../../Components/Hooks/useAxiosSecure";
-import useCart from "../../../Components/Hooks/useCart";
-import SectionTitle from "../../../Components/Common/SectionTitle";
+import useAxiosSecure from "../../../components/Hooks/useAxiosSecure";
+import useCart from "../../../components/Hooks/useCart";
+import SectionTitle from "../../../components/Common/SectionTitle";
 
 
 const MyCart = () => {

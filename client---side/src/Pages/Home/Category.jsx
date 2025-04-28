@@ -1,5 +1,5 @@
 import React from 'react';
-import SectionTitle from '../../Components/Common/SectionTitle';
+import SectionTitle from '../../components/Common/SectionTitle';
 import Marquee from "react-fast-marquee";
 import slide1 from '../../assets/home/slide1.jpg';
 import slide2 from '../../assets/home/slide2.jpg';

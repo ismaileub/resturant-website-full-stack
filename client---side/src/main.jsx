@@ -3,13 +3,14 @@ import * as ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import "./index.css";
 import router from "./Routes/Router";
-import AuthProviders from "./Components/Providers/AuthProviders";
+
 
 import {
   QueryClient,
   QueryClientProvider,
   useQuery
 } from '@tanstack/react-query'
+import AuthProviders from "./Components/Providers/AuthProviders";
 
 const queryClient = new QueryClient()
 

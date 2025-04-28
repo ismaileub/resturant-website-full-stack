@@ -10,7 +10,7 @@ import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../Pages/Dashboard/Dashboard_Layout/Dashboard";
 import UserHome from "../Pages/Dashboard/UserDashboard/UserHome";
 import MyCart from "../Pages/Dashboard/UserDashboard/MyCart";
-import ErrorPage from "../Components/Errorpage/ErrorPage";
+import ErrorPage from "../components/Errorpage/ErrorPage";
 import AllUsers from "../Pages/Dashboard/AdminDashboard/AllUsers";
 import AdminRoute from "./AdminRoute";
 import AddItems from "../Pages/Dashboard/AdminDashboard/AddItems";
