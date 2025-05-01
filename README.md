@@ -6,7 +6,7 @@
 
 ## 🌐 Live Site
 
-**Frontend deployed on:** [Netlify](https://react-dragon-news-89b3a.web.app)
+**Frontend deployed on:** [Netlify](https://venerable-begonia-31d114.netlify.app)
 
 ## 🛠️ Tech Stack
 
